@@ -45,7 +45,7 @@ def nobleurl_add(bot, trigger):
     else: 
         nick, desc = trigger.group(2).split(' ', 1)
         last_id = str(bot.db.who.size())
-        bot.db.nobleurl.update(last_id, {'id': last_id, 'nick': nick, 'desc': desc}, 'id')
+        bot.db.who.update(last_id, {'id': last_id, 'nick': nick, 'desc': desc}, 'id')
         bot.reply('Added {}: {}'.format(nick, desc))
 
 
