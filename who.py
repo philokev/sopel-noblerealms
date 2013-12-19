@@ -24,7 +24,7 @@ def setup(bot):
 def nobleurl(bot, trigger):
     nick = trigger.group(2)
     try:
-        nick = bot.db.nobleurl.get(keyword, ('desc'), 'nick')
+        nick = bot.db.who.get(keyword, ('desc'), 'nick')
         bot.say(desc)
     except KeyError:
         bot.say(nick + ': unrecognised nickname')
@@ -33,7 +33,7 @@ def nobleurl(bot, trigger):
 @willie.module.commands('listn')
 def nobleurl_list(bot, trigger):
     bot.reply("I'm sending you a private message of all available nicknames!")
-    bookmarks = ', '.join(nick[0] for nick in bot.db.nobleurl.keys('nick'))
+    bookmarks = ', '.join(nick[0] for nick in bot.db.who.keys('nick'))
     bot.msg(trigger.nick, bookmarks)
 
 
@@ -44,7 +44,7 @@ def nobleurl_add(bot, trigger):
         return
     else: 
         nick, desc = trigger.group(2).split(' ', 1)
-        last_id = str(bot.db.nobleurl.size())
+        last_id = str(bot.db.who.size())
         bot.db.nobleurl.update(last_id, {'id': last_id, 'nick': nick, 'desc': desc}, 'id')
         bot.reply('Added {}: {}'.format(nick, desc))
 
@@ -56,5 +56,5 @@ def nobleurl_del(bot, trigger):
         return
     else:
         nick = trigger.group(2)
-        bot.db.nobleurl.delete(nick, 'nick')
+        bot.db.who.delete(nick, 'nick')
         bot.reply('Removed {}'.format(nick))
