@@ -11,59 +11,50 @@
 
 from operator import itemgetter
 import willie
+from willie.module import commands, OP
 
-KEYWORDS = {
-    'montalk': 0,
+def setup(bot):
+    if bot.db:
+        nobleurl_table = ('nobleurl', ('id', 'keyword', 'url'), 'id')
+        if not bot.db.check_table(*nobleurl_table):
+            bot.db.add_table(*nobleurl_table)
 
-    'cassiopaea': 1,
-    'cassiopaeans': 1,
-    'cass': 1,
-
-    'botd': 2,
-    'pleiadians': 2,
-    'bringer': 2,
-
-    'bibliotecapleyades': 3,
-    'bib': 3,
-
-    'kjv': 4,
-
-    'soul': 5,
-
-    'blackfox': 6,
-
-    'bitcoin': 7,
-
-    'haich': 8
-}
-
-NR_URLS = [
-    'http://www.montalk.net',
-    'https://cassiopaea.org/forum/index.php/topic,13581.0.html',
-    'http://www.universe-people.com/english/svetelna_knihovna/htm/en/en_kniha_bringers_of_the_dawn.htm',
-    'http://www.bibliotecapleyades.net',
-    'http://www.kingjamesbibleonline.org/',
-    'http://soul1.org/Rainbow_bridge2.htm',
-    'http://brain.wireos.com',
-    'https://www.weusecoins.com',
-    'http://www.znakovi-vremena.net/en/Elisabeth_Haich_Initiation.pdf'
-]
 
 @willie.module.commands('url', 'link', 'b')
 def nobleurl(bot, trigger):
     keyword = trigger.group(2)
     try:
-        bot.say(url(keyword))
+        url = bot.db.nobleurl.get(keyword, ('url'), 'keyword')
+        bot.say(url)
     except KeyError:
         bot.say(keyword + ': unrecognised keyword')
 
 
-@willie.module.commands('blist')
+@willie.module.commands('listb')
 def nobleurl_list(bot, trigger):
     bot.reply("I'm sending you a private message of all available bookmarks!")
-    bookmarks = ', '.join(key for key, _ in sorted(KEYWORDS.items(), key=itemgetter(1)))
+    bookmarks = ', '.join(key[0] for key in bot.db.nobleurl.keys('keyword'))
     bot.msg(trigger.nick, bookmarks)
 
 
-def url(keyword):
-    return NR_URLS[KEYWORDS[keyword]]
+@willie.module.commands('addb')
+def nobleurl_add(bot, trigger):
+    if bot.privileges[trigger.sender][trigger.nick] < OP:
+        bot.reply('You must be an op to add keywords')
+        return
+    else:
+        key, url = trigger.group(2).split(' ')
+        last_id = str(bot.db.nobleurl.size())
+        bot.db.nobleurl.update(last_id, {'id': last_id, 'keyword': key, 'url': url}, 'id')
+        bot.reply('Added {}: {}'.format(key, url))
+
+
+@willie.module.commands('delb')
+def nobleurl_del(bot, trigger):
+    if bot.privileges[trigger.sender][trigger.nick] < OP:
+        bot.reply('You must be an op to add keywords')
+        return
+    else:
+        key = trigger.group(2)
+        bot.db.nobleurl.delete(key, 'keyword')
+        bot.reply('Removed {}'.format(key))
