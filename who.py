@@ -24,7 +24,7 @@ def setup(bot):
 def nobleurl(bot, trigger):
     nick = trigger.group(2)
     try:
-        nick = bot.db.who.get(keyword, ('desc'), 'nick')
+        nick = bot.db.who.get(nick, ('desc'), 'nick')
         bot.say(desc)
     except KeyError:
         bot.say(nick + ': unrecognised nickname')
