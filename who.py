@@ -1,0 +1,60 @@
+#-------------------------------------------------------------------------------
+# Name:        NobleUrl
+# Purpose:
+#
+# Author:      Kev
+#
+# Created:     16/11/2013
+# Copyright:   (c) Kev 2013
+# Licence:     <your licence>
+#-------------------------------------------------------------------------------
+
+from operator import itemgetter
+import willie
+from willie.module import commands, OP
+
+def setup(bot):
+    if bot.db:
+        nobleurl_table = ('who', ('id', 'nick', 'desc'), 'id')
+        if not bot.db.check_table(*nobleurl_table):
+            bot.db.add_table(*nobleurl_table)
+
+
+@willie.module.commands('n', 'who')
+def nobleurl(bot, trigger):
+    nick = trigger.group(2)
+    try:
+        nick = bot.db.nobleurl.get(keyword, ('desc'), 'nick')
+        bot.say(desc)
+    except KeyError:
+        bot.say(nick + ': unrecognised nickname')
+
+
+@willie.module.commands('listn')
+def nobleurl_list(bot, trigger):
+    bot.reply("I'm sending you a private message of all available nicknames!")
+    bookmarks = ', '.join(nick[0] for nick in bot.db.nobleurl.keys('nick'))
+    bot.msg(trigger.nick, bookmarks)
+
+
+@willie.module.commands('addn')
+def nobleurl_add(bot, trigger):
+    if bot.privileges[trigger.sender][trigger.nick] < OP:
+        bot.reply('You must be an op to add nickname descriptions')
+        return
+    else: 
+        nick, desc = trigger.group(2).split(' ', 1)
+        last_id = str(bot.db.nobleurl.size())
+        bot.db.nobleurl.update(last_id, {'id': last_id, 'nick': nick, 'desc': desc}, 'id')
+        bot.reply('Added {}: {}'.format(nick, desc))
+
+
+@willie.module.commands('deln')
+def nobleurl_del(bot, trigger):
+    if bot.privileges[trigger.sender][trigger.nick] < OP:
+        bot.reply('You must be an op to add nickname descriptions')
+        return
+    else:
+        nick = trigger.group(2)
+        bot.db.nobleurl.delete(nick, 'nick')
+        bot.reply('Removed {}'.format(nick))
