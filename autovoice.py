@@ -1,4 +1,4 @@
-from willie.module import event
+from willie.module import rule, event
 
 @event('JOIN')
 @rule(r'.*')
