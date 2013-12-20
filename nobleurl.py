@@ -22,7 +22,7 @@ def setup(bot):
 
 @willie.module.commands('url', 'link', 'b')
 def nobleurl(bot, trigger):
-    keyword = trigger.group(2)
+    keyword = trigger.group(2).lower()
     try:
         url = bot.db.nobleurl.get(keyword, ('url'), 'keyword')
         bot.say(url)
@@ -44,6 +44,7 @@ def nobleurl_add(bot, trigger):
         return
     else:
         key, url = trigger.group(2).split(' ')
+        key = key.lower()
         last_id = str(bot.db.nobleurl.size())
         bot.db.nobleurl.update(last_id, {'id': last_id, 'keyword': key, 'url': url}, 'id')
         bot.reply('Added {}: {}'.format(key, url))
@@ -55,6 +56,6 @@ def nobleurl_del(bot, trigger):
         bot.reply('You must be an op to add keywords')
         return
     else:
-        key = trigger.group(2)
+        key = trigger.group(2).lower()
         bot.db.nobleurl.delete(key, 'keyword')
         bot.reply('Removed {}'.format(key))
