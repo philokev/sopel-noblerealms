@@ -21,24 +21,24 @@ def setup(bot):
 
 
 @willie.module.commands('n', 'who')
-def nobleurl(bot, trigger):
+def who(bot, trigger):
     nick = trigger.group(2)
     try:
         desc = bot.db.who.get(nick, ('desc'), 'nick')
         bot.say(desc)
     except KeyError:
-        bot.say(nick + ': unrecognised nickname')
+        bot.say('{} : unrecognised nickname'.format(nick))
 
 
 @willie.module.commands('listn')
-def nobleurl_list(bot, trigger):
+def nickname_list(bot, trigger):
     bot.reply("I'm sending you a private message of all available nicknames!")
     bookmarks = ', '.join(nick[0] for nick in bot.db.who.keys('nick'))
     bot.msg(trigger.nick, bookmarks)
 
 
 @willie.module.commands('addn')
-def nobleurl_add(bot, trigger):
+def nickname_add(bot, trigger):
     if bot.privileges[trigger.sender][trigger.nick] < OP:
         bot.reply('You must be an op to add nickname descriptions')
         return
@@ -50,7 +50,7 @@ def nobleurl_add(bot, trigger):
 
 
 @willie.module.commands('deln')
-def nobleurl_del(bot, trigger):
+def nickname_del(bot, trigger):
     if bot.privileges[trigger.sender][trigger.nick] < OP:
         bot.reply('You must be an op to add nickname descriptions')
         return
