@@ -69,4 +69,4 @@ def desc(bot, trigger):
         else:
             bot.db.who.update(last_id, {'id': last_id, 'nick': nick, 'desc': desc}, 'id')
         
-        bot.reply('Added {}: {}'.format(nick, desc))
+        bot.reply('Your description: {}'.format(nick, desc))
