@@ -61,9 +61,10 @@ def nickname_del(bot, trigger):
         
 @willie.module.commands('desc')
 def desc(bot, trigger):
+        nick = trigger.nick.lower()
         desc = trigger.group(2)
         last_id = str(bot.db.who.size())
-        if bot.db.who.contains():
+        if bot.db.who.contains(nick, 'nick'):
             bot.db.who.update(nick, {'desc': desc}, 'nick')
         else:
             bot.db.who.update(last_id, {'id': last_id, 'nick': nick, 'desc': desc}, 'id')
