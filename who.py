@@ -44,6 +44,7 @@ def nickname_add(bot, trigger):
         return
     else: 
         nick, desc = trigger.group(2).split(' ', 1)
+        nick = nick.lower()
         last_id = str(bot.db.who.size())
         bot.db.who.update(last_id, {'id': last_id, 'nick': nick, 'desc': desc}, 'id')
         bot.reply('Added {}: {}'.format(nick, desc))
@@ -55,6 +56,6 @@ def nickname_del(bot, trigger):
         bot.reply('You must be an op to add nickname descriptions')
         return
     else:
-        nick = trigger.group(2)
+        nick = trigger.group(2).lower()
         bot.db.who.delete(nick, 'nick')
         bot.reply('Removed {}'.format(nick))
