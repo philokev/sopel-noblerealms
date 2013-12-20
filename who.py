@@ -20,7 +20,7 @@ def setup(bot):
             bot.db.add_table(*nobleurl_table)
 
 
-@willie.module.commands('n', 'who')
+@willie.module.commands('n', 'who', 'about')
 def who(bot, trigger):
     nick = trigger.group(2)
     try:
@@ -39,23 +39,21 @@ def nickname_list(bot, trigger):
 
 @willie.module.commands('addn')
 def nickname_add(bot, trigger):
-    if bot.privileges[trigger.sender][trigger.nick] < OP:
-        bot.reply('You must be an op to add nickname descriptions')
-        return
-    else: 
-        nick, desc = trigger.group(2).split(' ', 1)
-        nick = nick.lower()
+    nick, desc = trigger.group(2).split(' ', 1)
+    nick = nick.lower()
+    if bot.privileges[trigger.sender][trigger.nick] >= OP or trigger.nick.lower() == nick:
         last_id = str(bot.db.who.size())
         bot.db.who.update(last_id, {'id': last_id, 'nick': nick, 'desc': desc}, 'id')
         bot.reply('Added {}: {}'.format(nick, desc))
+    else:
+        bot.reply('You must be an op to add nickname descriptions')         
 
 
 @willie.module.commands('deln')
 def nickname_del(bot, trigger):
-    if bot.privileges[trigger.sender][trigger.nick] < OP:
-        bot.reply('You must be an op to add nickname descriptions')
-        return
-    else:
-        nick = trigger.group(2).lower()
+    nick = trigger.group(2).lower()
+    if bot.privileges[trigger.sender][trigger.nick] >= OP or trigger.nick.lower() == nick:
         bot.db.who.delete(nick, 'nick')
         bot.reply('Removed {}'.format(nick))
+    else:
+        bot.reply('You must be an op to add nickname descriptions')
