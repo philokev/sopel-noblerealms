@@ -4,7 +4,7 @@ Purpose:	Customised version of the calibre module to search the Alexandria libra
 Author:	  	Kevin Laurier
 Created:	14/11/2013
 Copyright:	(c) Kevin Laurier 2013
-Licence:	GPLv3
+Licence:	Eiffel Forum License v2
 """
 
 

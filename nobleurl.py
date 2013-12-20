@@ -1,12 +1,12 @@
 #-------------------------------------------------------------------------------
 # Name:        NobleUrl
-# Purpose:
+# Purpose:     Associate a URL to a keyword.
 #
-# Author:      Kev
+# Author:      Kevin Laurier
 #
 # Created:     16/11/2013
-# Copyright:   (c) Kev 2013
-# Licence:     <your licence>
+# Copyright:   (c) Kevin Laurier 2013
+# Licence:     Eiffel Forum License v2
 #-------------------------------------------------------------------------------
 
 from operator import itemgetter
