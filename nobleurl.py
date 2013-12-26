@@ -33,7 +33,7 @@ def nobleurl(bot, trigger):
 @willie.module.commands('listb')
 def nobleurl_list(bot, trigger):
     bot.reply("I'm sending you a private message of all available bookmarks!")
-    bookmarks = ', '.join(key[0] for key in bot.db.nobleurl.keys('keyword'))
+    bookmarks = ', '.join(str(key[0]) for key in bot.db.nobleurl.keys('keyword'))
     bot.msg(trigger.nick, bookmarks)
 
 
