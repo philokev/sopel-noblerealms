@@ -1,0 +1,162 @@
+NobleBot Howto
+=====================
+
+Requirements
+
+Python 2.7
+Pip (recommended to install modules, but easy_install can be used instead)
+git (optional, but recommended in order to keep modules up to date)
+lxml (optional; only supported under linux)
+enchant (optional; only supported under linux)
+
+
+Setting up prerequisites
+========================
+
+
+Windows
+-------
+
+Download and install Python 2.7 from http://www.python.org/download/
+
+In your environment variables, append the following to your PATH variable:
+
+C:\Python2.7\Scripts
+
+To install Git, download it from http://git-scm.com/download/win and run the executable. Select "Run Git from the command prompt" when prompted.
+
+
+The configuration files are located in C:\Users\UserName\.willie
+
+
+Linux
+-----
+
+Use your distribution package installer to install module dependencies (e.g. lxml or enchant).
+
+Python 2.7 and Git should be available via the package manager; if not, refer to the CentOS section.
+
+
+The configuration files are located in the home directory, ie. ~/.willie or /home/username/.willie
+
+
+CentOS
+------
+
+As of version 6.5, CentOS does not come with Python 2.7 by default, so this needs to be installed separately. Installation instructions can be found here:
+
+https://github.com/0xdata/h2o/wiki/Installing-python-2.7-on-centos-6.3.-Follow-this-sequence-exactly-for-centos-machine-only
+
+To install Python modules, make sure you are installing them with pip-2.7, or else they will be installed only for the default Python installation instead of the 2.7 one.
+
+Use Yum to install Git or module dependencies (e.g. lxml or enchant)
+
+
+The configuration files are located in the home directory, ie. ~/.willie or /home/username/.willie
+
+
+Mac OS X (10.9 and later)
+-------------------------
+
+Python 2.7 is installed by default. To install pip, run:
+
+easy_install pip
+
+To install git, install the latest version of XCode (available in the App Store). 
+
+Then install Homebrew with the following command:
+
+ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+
+Then install Git with the following command:
+
+brew install GIT
+
+
+The configuration files are located in /Users/Username/.willie
+
+
+
+Mac OS X (10.8 and earlier)
+---------------------------
+
+Python 2.7 can be installed with Homebrew with the following instructions:
+
+http://docs.python-guide.org/en/latest/starting/install/osx/
+
+Then download the following file:
+
+https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+
+and run it with python 2.7:
+
+	python2.7 ./get-pip.py
+
+
+To install git, install the latest version of XCode supported by your OS. Then run the following:
+
+	brew install GIT
+
+
+The configuration files are located in /Users/Username/.willie
+
+
+
+Setting up NobleBot
+-------------------
+
+1) run:
+	pip install willie
+
+
+2) run willie. This should be in your global path.
+
+3) Press ctrl+C to quit Willie. You do not need to configure Willie since you will use a pre-set config file.
+
+3) In the willie configuration root directory, create the directories 'modules' and 'noblerealms', if they do not already exist.
+
+4) Create or overwrite default.cfg in the configuration root directory with the provided configuration file. The file contains the nickserv password for NobleBot, so contact the bot maintainer to obtain it.
+
+5) Copy the willie.db file to the same directory (this may be updated arbitrarily, so contact the bot maintainer to obtain it).
+
+6) Copy the modules from the willie-extras repository to the 'modules' directory, or run the following command:
+	git clone https://github.com/embolalia/willie-extras.git
+
+7) Copy the modules from the willie-noblerealms repository to the 'noblerealms' directory, or run the following command:
+	git clone https://github.com/laukev7/willie-noblerealms.git
+
+6) In default.cfg under [core], replace the 'extra' field with the absolute path of the directory where the custom willie-noblerealms modules will located ('noblerealms').
+
+7) In default.cfg under [db], replace the userdb_file field with the absolute path of the willie.db file
+
+8) Run the following command:
+
+	pip install pytz requests feedparser tweepy python-dateutil praw lxml
+
+9) Run willie. If any module fails to start, it will not prevent NobleBot from running. You may add the modules to the exclude field under [core] in the config file.
+
+
+To start Willie
+---------------
+
+Run:
+	willie -d
+
+
+To stop willie
+--------------
+
+Run:
+
+	willie --quit
+
+
+To update modules
+-----------------
+
+1) cd to the directory containing the modules
+
+2) run:
+
+	git pull
+
